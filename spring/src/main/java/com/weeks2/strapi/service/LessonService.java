@@ -2,6 +2,7 @@ package com.weeks2.strapi.service;
 
 import com.weeks2.strapi.common.ClientRest;
 import com.weeks2.strapi.lesson.Lesson;
+import com.weeks2.strapi.lesson.LessonData;
 import com.weeks2.strapi.lesson.LessonList;
 import com.weeks2.strapi.lesson.LessonPayload;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +35,10 @@ public class LessonService {
         return l;
     }
 
-    public void create(HttpHeaders headers,Lesson.Attributes payload) {
-        var data = new LessonPayload();
-        data.setData(payload);
-        var response = rest.httpPostRequest(url, headers,data,LessonPayload.class);
+    public void create(HttpHeaders headers,Lesson.Attributes data) {
+        var payload = new LessonPayload();
+        payload.setData(data);
+        var response = rest.httpPostRequest(url, headers,payload,LessonData.class);
         log.info("response {}",response);
     }
 
