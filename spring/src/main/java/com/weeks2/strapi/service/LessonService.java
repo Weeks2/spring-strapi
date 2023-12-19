@@ -1,5 +1,7 @@
 package com.weeks2.strapi.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.weeks2.strapi.common.ClientRest;
 import com.weeks2.strapi.lesson.Lesson;
 import com.weeks2.strapi.lesson.LessonData;
@@ -46,5 +48,23 @@ public class LessonService {
        return fetch(authHeader).stream()
                .filter(l-> l.getId() == id)
                .collect(Collectors.toList());
+    }
+
+    public List<com.weeks2.strapi.model.Lesson> fetchData(HttpHeaders headers, int id) {
+        return rest.httpGetRequest(url, headers, ClientRest.DataList.class)
+                .getData()
+                .stream()
+                .map(jsonNode -> toLesson(jsonNode))
+                .collect(Collectors.toList());
+    }
+
+    private com.weeks2.strapi.model.Lesson toLesson(JsonNode item) {
+        try {
+            var lesson = rest.mapNode(item, com.weeks2.strapi.model.Lesson.class);
+            lesson.setId(item.get("id").asInt());
+            return lesson;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

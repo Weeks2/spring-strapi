@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 api:
   filter: ?filters[tenantId][%24eq]=137
   host: https://api-core-q9s1.onrender.com
